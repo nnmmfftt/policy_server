@@ -1,3 +1,8 @@
+#-*- coding: utf-8 -*-
+__author__ = 'hiqex'
+# 为开发使用，系统除了每次在自动更新时条用此文件中函数更新每一个用户的model，管理员能够创建用户，
+# 此时系统能够为新用户创建model。
+
 import policy_comp
 import _pickle as cPickle
 import numpy as np
@@ -9,28 +14,32 @@ import pandas as pd
 import pydotplus
 import os
 import sys
-# 数据量小，使用map的方式存储用户model信息
+# 实验使用数据量小，使用dict + file的方式存储用户model信息
 
 
 class Model:
     def __init__(self, name):
         try:
-            f = open(name,'rb')
+            f = open(name, 'rb')
         except FileNotFoundError:
+            self.model_map = {}
             print("model file open error, check the file")
         else:
-            model_map = cPickle.load(f)
-            size = len(model_map)
+            self.model_map = cPickle.load(f)
+            self.size = len(self.model_map)
 
-    def __findModel(self, userid, model_map):
-        model = model_map[userid]
+    def __findmodel(self, userid=0):
+        model = self.model_map[userid]
         return model
 
     def predict(self, userid, test_case):
-        model = __findModel__(userid, model_map)
-        return model.predict(test_case)
+        model = self.__findmodel(userid)
+        m = model.predict(test_case)
+        return m
 
-    def __modelGenerator__(self, userid, policy_file):
+    def __model_update(self,request):
+
+    def __modelGenerator(self, userid, policy_file):
         # 新用户需要生成policy，以及更新了策略文件后需要重新修改policy文件后需要重新build model
         X = []
         Y = []
@@ -58,12 +67,12 @@ class Model:
         return model
         # print(model)
 
-    def __saveModel__(self, name, userid, model):
+    def __saveModel(self, name, userid, model):
         # 保存新的user_id对应的model
         # 再将model落盘
-        model_map[userid] = model
+        self.model_map[userid] = model
         save_name = name+'.pkl'
-        cPickle.dump(model_map, open(save_name, 'w'), cPickle.HIGHEST_PROTOCOL)
+        cPickle.dump(self.model_map, open(save_name, 'w'), cPickle.HIGHEST_PROTOCOL)
 
     def drawDecisionTree(self, model, filename_pdf_output):
         # the DT graph

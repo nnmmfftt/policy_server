@@ -8,8 +8,8 @@ doc_dict = {}
 
 class TimeCheck:
     def __init__(self):
-        equl = False
-        userid = None
+        self.equal = False
+        self.userid = None
         tag_received = None
 
     def compare(self, userid, tag_received):
@@ -17,28 +17,31 @@ class TimeCheck:
         received_tag = tag_received
         exist = pyotp.TOTP(exist_tag)
         received = pyotp.TOTP(received_tag)
-        equl = exist.now() == received.now()
-        return equl
+        self.equal = exist.now() == received.now()
+        return self.equal
 
 
 class PermissionCheck:
-    def __init__(self):
-        idnum = None
+    def __init__(self, ids=None):
+        self.idNum = ids
+        self.exist = False
 
-    def check(self, idNum):
+    def check(self, ids=None):
+        if ids is None:
+            return self.exist
         try:
-            exist = doc_dict[idNum]
-            return exist
+            self.exist = doc_dict[self.idNum]
+            self.exist = True
+            return self.exist
         except KeyError:
-            return None
+            return self.exist
 
 
 if __name__ == '__main__':
     # using
     # python file.py docid patientid totp
     docID = sys.argv[1]
-    c = PermissionCheck()
-    comp = c.check(docID)
+    comp = PermissionCheck().check(docID)
     if comp is None:
         print("Invalid doc info")
     else:
@@ -48,8 +51,6 @@ if __name__ == '__main__':
         result = t.compare(userid=userID, tag_received=tag)
         print(result)
 
-
-    policy_comp.pred_max(input_file, out)
 
 
 
