@@ -1,6 +1,8 @@
 import sys
 import perm_check
 import model_build
+import policy_paser
+import
 import os
 
 class Request:
@@ -22,7 +24,18 @@ class Request:
         else:
             return False
 
-    def
+
+class Engine:
+    def __init__(self):
+
+    def decision(self):
+        p = perm_check.PermissionCheck()
+        rc = p.check(self.doc_token)
+        if rc is True:
+            model_build.Model.predict(pid, request)
+        return
+
+
 
 
 

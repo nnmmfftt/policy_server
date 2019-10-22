@@ -39,6 +39,8 @@ class Model:
 
     def __model_update(self,request):
 
+        model_map
+
     def __modelGenerator(self, userid, policy_file):
         # 新用户需要生成policy，以及更新了策略文件后需要重新修改policy文件后需要重新build model
         X = []
