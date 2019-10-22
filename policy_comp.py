@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+__author__ = 'hiqex'
 import numpy as np
 from sklearn import metrics
 from sklearn import tree

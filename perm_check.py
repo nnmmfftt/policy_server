@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+__author__ = 'hiqex'
 import pyotp
 import sys
 import policy_comp

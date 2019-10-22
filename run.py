@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+__author__ = 'hiqex'
 import sys
 import perm_check
 import model_build
